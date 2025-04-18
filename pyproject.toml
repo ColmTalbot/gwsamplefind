@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gwsamplefind"
+version = "0.1.0"
+description = "Access gravitational-wave sample data"
+
+dependencies = ["pandas", "requests"]
+
+[project.scripts]
+gwsamplefind = "gwsamplefind.gwsamplefind:main"
+
+[tool.setuptools]
+packages = ["gwsamplefind"]
+
+[tool.setuptools.package-dir]
+gwsamplefind = "."
