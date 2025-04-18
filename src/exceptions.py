@@ -1,0 +1,2 @@
+class GWSampleFindError(Exception):
+    pass
