@@ -10,7 +10,7 @@ description = "Access gravitational-wave sample data"
 dependencies = ["gwosc", "pandas", "requests"]
 
 [project.scripts]
-gwsamplefind = "gwsamplefind.gwsamplefind:main"
+gwsamplefind = "gwsamplefind.__main__:main"
 
 [tool.setuptools]
 packages = ["gwsamplefind"]
