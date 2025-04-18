@@ -6,8 +6,11 @@ build-backend = "setuptools.build_meta"
 name = "gwsamplefind"
 version = "0.1.0"
 description = "Access gravitational-wave sample data"
-
+readme = "README.rst"
 dependencies = ["gwosc", "pandas", "requests"]
+
+[project.optional-dependencies]
+test = ["pytest"]
 
 [project.scripts]
 gwsamplefind = "gwsamplefind.__main__:main"

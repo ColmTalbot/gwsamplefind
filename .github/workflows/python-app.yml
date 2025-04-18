@@ -26,9 +26,11 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        python -m pip install .
+        python -m pip install .[test]
     - name: Test with command line interface
       run: |
+        pytest  .
+        export GWSAMPLEFIND_SERVER=https://gwsamples.duckdns.org
         python -m gwsamplefind --outdir ./tmp --n-samples 10 --parameters mass_1_source --seed 10 --host https://gwsamples.duckdns.org --ifar-threshold 5
-        python -m gwsamplefind --outdir ./tmp --n-samples 10 --parameters mass_1_source --seed 10 --host https://gwsamples.duckdns.org --ifar-threshold 5 --events GW150914_095045 GW190517_055101
-        python -m gwsamplefind --outdir ./tmp --n-samples 10 --parameters mass1_source --seed 10 --host https://gwsamples.duckdns.org --ifar-threshold 5 --injection-set o1+o2+o3_bbhpop_real+semianalytic
+        gwsamplefind --outdir ./tmp --n-samples 10 --parameters mass_1_source --seed 10 --ifar-threshold 5 --events GW150914_095045 GW190517_055101
+        python -m gwsamplefind --outdir ./tmp --n-samples 10 --parameters mass1_source --seed 10 --ifar-threshold 5 --injection-set o1+o2+o3_bbhpop_real+semianalytic
