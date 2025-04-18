@@ -7,7 +7,7 @@ name = "gwsamplefind"
 version = "0.1.0"
 description = "Access gravitational-wave sample data"
 
-dependencies = ["pandas", "requests"]
+dependencies = ["gwosc", "pandas", "requests"]
 
 [project.scripts]
 gwsamplefind = "gwsamplefind.gwsamplefind:main"
@@ -16,4 +16,4 @@ gwsamplefind = "gwsamplefind.gwsamplefind:main"
 packages = ["gwsamplefind"]
 
 [tool.setuptools.package-dir]
-gwsamplefind = "."
+gwsamplefind = "src"
