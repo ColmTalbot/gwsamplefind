@@ -9,7 +9,7 @@ from .exceptions import GWSampleFindError
 __all__ = ["Client"]
 
 
-def _sample_request(request: str) -> pd.DataFrame:
+def _sample_request(request: str) -> tuple[pd.DataFrame, dict]:
     result = requests.get(request, verify=True)
     if result.status_code == 502:
         # retry on timeout error
@@ -27,9 +27,9 @@ def _sample_request(request: str) -> pd.DataFrame:
 class SampleFindClient:
 
     @cache
-    def events(self):
+    def events(self) -> list[str]:
         """
-        >>> client = Client("https://gwsamples.duckdns.org")
+        >>> client = SampleFindClient("https://gwsamples.duckdns.org")
         >>> client.events()[:3]
         ['GW150914_095045', 'GW151012_095443', 'GW151226_033853']
         >>> client.get_samples("GW190403_051519", ["mass_1_source", "mass_2_source"], 10, seed=123)
@@ -47,10 +47,18 @@ class SampleFindClient:
         """
         return requests.get(f"{self.host}/events").json()
 
-    def get_samples(self, event, parameters, n_samples=-1, model="C01:IMRPhenomXPHM", seed=None):
+    def get_samples(
+                self,
+        event: str,
+        parameters: list[str],
+        *,
+        n_samples: int = -1,
+        model: str = "C01:IMRPhenomXPHM",
+        seed: int | None = None,
+    ) -> tuple[pd.DataFrame, dict[str, str]]:
         """
-        >>> client = Client("https://gwsamples.duckdns.org")
-        >>> client.get_samples("GW190403_051519", ["mass_1_source", "mass_2_source"], 10, seed=123)
+        >>> client = SampleFindClient("https://gwsamples.duckdns.org")
+        >>> client.get_samples("GW190403_051519", ["mass_1_source", "mass_2_source"], n_samples=10, seed=123)
         (       mass_1_source  mass_2_source
         171        84.189941      12.951107
         10120      65.196794      39.803265
@@ -68,18 +76,26 @@ class SampleFindClient:
         return _sample_request(request)
 
     @cache
-    def injection_sets(self):
+    def injection_sets(self) -> list[str]:
         """
-        >>> client = Client("https://gwsamples.duckdns.org")
+        >>> client = SampleFindClient("https://gwsamples.duckdns.org")
         >>> client.injection_sets()[:3]
         ['endo3_bbhpop', 'endo3_bnspop', 'endo3_imbhpop']
         """
         return requests.get(f"{self.host}/injections").json()
 
-    def get_injections(self, injection_set, parameters, n_samples=-1, ifar_threshold=1, seed=None):
+    def get_injections(
+        self,
+        injection_set: str,
+        parameters: list[str],
+        *,
+        n_samples: int = -1,
+        ifar_threshold: float = 1,
+        seed: int | None = None,
+    ) -> tuple[pd.DataFrame, dict]:
         """
-        >>> client = Client("https://gwsamples.duckdns.org")
-        >>> client.get_injections("endo3_bbhpop", ["mass1_source"], 10, seed=123)
+        >>> client = SampleFindClient("https://gwsamples.duckdns.org")
+        >>> client.get_injections("endo3_bbhpop", ["mass1_source"], n_samples=10, seed=123)
         (        mass1_source
         4924       11.553748
         18794       5.232413

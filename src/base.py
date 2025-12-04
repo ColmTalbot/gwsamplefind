@@ -45,18 +45,6 @@ class Client(ABC):
         >>> client = Client()
         >>> client.events()[:3]
         ['GW150914_095045', 'GW151012_095443', 'GW151226_033853']
-        >>> client.get_samples("GW190403_051519", ["mass_1_source", "mass_2_source"], 10, seed=123)
-        (       mass_1_source  mass_2_source
-        171        84.189941      12.951107
-        10120      65.196794      39.803265
-        2453       93.339017      13.003137
-        3715       90.226224      18.606987
-        7594       58.999799      30.350026
-        6600       77.465397      28.502002
-        2840       77.523519      21.019240
-        1959      106.907594      11.683538
-        2053       95.548452      26.507532
-        599        71.564036      25.451262, {'filename': 'IGWN-GWTC2p1-v2-GW190403_051519_PEDataRelease_mixed_cosmo.h5', 'model': 'C01:IMRPhenomXPHM'})
         """
         raise NotImplementedError
 
@@ -64,6 +52,7 @@ class Client(ABC):
         self,
         event: str,
         parameters: list[str],
+        *,
         n_samples: int = -1,
         model: str = "C01:IMRPhenomXPHM",
     ) -> tuple[pd.DataFrame, dict[str, str]]:
@@ -82,13 +71,15 @@ class Client(ABC):
         self,
         event: str,
         parameters: list[str],
+        *,
         n_samples: int = -1,
         model: str = "C01:IMRPhenomXPHM",
         seed: int | None = None,
-    ) -> pd.DataFrame:
+        pattern: str| None = None,
+    ) -> tuple[pd.DataFrame, dict[str, str]]:
         """
         >>> client = Client()
-        >>> client.get_samples("GW190403_051519", ["mass_1_source", "mass_2_source"], 10, seed=123)
+        >>> client.get_samples("GW190403_051519", ["mass_1_source", "mass_2_source"], n_samples=10, seed=123)
         (       mass_1_source  mass_2_source
         171        84.189941      12.951107
         10120      65.196794      39.803265
@@ -116,13 +107,14 @@ class Client(ABC):
         self,
         injection_set: str,
         parameters: list[str],
+        *,
         n_samples: int = -1,
         ifar_threshold: float = 1,
         seed: int | None = None,
-    ) -> pd.DataFrame:
+    ) -> tuple[pd.DataFrame, dict]:
         """
         >>> client = Client()
-        >>> client.get_injections("endo3_bbhpop", ["mass1_source"], 10, seed=123)
+        >>> client.get_injections("endo3_bbhpop", ["mass1_source"], n_samples=10, seed=123)
         (        mass1_source
         4924       11.553748
         18794       5.232413
