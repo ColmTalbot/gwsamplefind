@@ -3,3 +3,6 @@ __pycache__/
 build
 *.egg-info/
 tmp/
+.venv
+*.lock
+.vscode
